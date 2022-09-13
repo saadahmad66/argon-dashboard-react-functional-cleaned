@@ -35,7 +35,7 @@ const ForgetPassword = () => {
 			<Card className='bg-secondary shadow border-0'>
 				<CardBody className='px-lg-5 py-lg-5'>
 					<div className='text-center text-muted mb-4'>
-						<small>Sign up</small>
+						<small>Forget Password</small>
 					</div>
 					<Form
 						role='form'
@@ -55,7 +55,6 @@ const ForgetPassword = () => {
 									placeholder='Email'
 									type='email'
 									autoComplete='new-email'
-									// value={registerEmail}
 									onChange={e =>
 										setForgetEmail(e.target.value)
 									}

@@ -51,9 +51,6 @@ export const doLogOut = () => async dispatch => {
 };
 
 export const doSignUp = (credentials, password, history) => {
-	// console.log('credential', credentials);
-	// console.log(password, 'password');
-	// console.log(history, 'history');
 	return async dispatch => {
 		dispatch(RegisterLoader(true));
 		await firebase
@@ -85,7 +82,7 @@ export const doSignUp = (credentials, password, history) => {
 };
 
 export const ResetPassword = email => async dispatch => {
-	console.log(email, '===>email');
+	// console.log(email, '===>email');
 	dispatch(ForgetPasswordLoader(true));
 
 	await firebase
