@@ -20,6 +20,7 @@ import Profile from 'views/Profile.js';
 import Maps from 'views/Maps.js';
 import Register from 'views/auth/Register.js';
 import Login from 'views/auth/Login.js';
+import ForgetPassword from 'views/auth/ForgetPassword';
 import Tables from 'views/Tables.js';
 import Icons from 'views/Icons.js';
 
@@ -60,6 +61,14 @@ var routes = [
 		layout: '/admin',
 	},
 	{
+		path: '/forgetPassword',
+		name: 'ForgetPassword',
+		icon: 'ni ni-key-25 text-info',
+		component: ForgetPassword,
+		layout: '/auth',
+		isMenu: false,
+	},
+	{
 		path: '/login',
 		name: 'Login',
 		icon: 'ni ni-key-25 text-info',
@@ -73,7 +82,7 @@ var routes = [
 		icon: 'ni ni-circle-08 text-pink',
 		component: Register,
 		layout: '/auth',
-		isMenu: false
+		isMenu: false,
 	},
 ];
 export default routes;
