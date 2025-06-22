@@ -1,22 +1,7 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// reactstrap components
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "firebase/Firebase";
+import { useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import {
   Button,
   Card,
@@ -24,14 +9,56 @@ import {
   FormGroup,
   Form,
   Input,
+  InputGroup,
   InputGroupAddon,
   InputGroupText,
-  InputGroup,
   Row,
   Col,
+  Alert,
 } from "reactstrap";
 
 const Register = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+  const [privacyChecked, setPrivacyChecked] = useState(false);
+  const history = useHistory();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      setName('');
+      setEmail('');
+      setPassword('');
+      setPrivacyChecked(false);
+      setAlert({
+        show: true,
+        message: "User successfully signed up!",
+        type: "success",
+      });
+
+
+      setTimeout(() => {
+        setAlert({ show: false, message: '', type: '' });
+        history.push('/auth/login');
+      }, 3000);
+    } catch (error) {
+      setAlert({
+        show: true,
+        message: `Error: ${error.message}`,
+        type: "danger",
+      });
+
+  
+      setTimeout(() => {
+        setAlert({ show: false, message: '', type: '' });
+      }, 3000);
+    }
+  };
+
   return (
     <>
       <Col lg="6" md="8">
@@ -40,7 +67,12 @@ const Register = () => {
             <div className="text-center text-muted mb-4">
               <small>Sign up</small>
             </div>
-            <Form role="form">
+            {alert.show && (
+              <Alert color={alert.type} fade={false} className="mb-4">
+                {alert.message}
+              </Alert>
+            )}
+            <Form role="form" onSubmit={handleSignup}>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
@@ -48,7 +80,12 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text" />
+                  <Input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Name"
+                    type="text"
+                  />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -59,6 +96,8 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
@@ -73,6 +112,8 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
@@ -86,6 +127,8 @@ const Register = () => {
                       className="custom-control-input"
                       id="customCheckRegister"
                       type="checkbox"
+                      checked={privacyChecked}
+                      onChange={(e) => setPrivacyChecked(e.target.checked)}
                     />
                     <label
                       className="custom-control-label"
@@ -102,7 +145,11 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button">
+                <Button
+                  className="mt-4"
+                  color="primary"
+                  type="submit"
+                >
                   Create account
                 </Button>
               </div>

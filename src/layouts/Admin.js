@@ -15,14 +15,15 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import routes from "routes.js";
+// import routes from "routes.js";
+import adminRoutes from "routes/adminRoutes";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -51,22 +52,28 @@ const Admin = (props) => {
   };
 
   const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
+    for (let i = 0; i < adminRoutes.length; i++) {
       if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
+        props.location.pathname.indexOf(adminRoutes[i].layout + adminRoutes[i].path) !==
         -1
       ) {
-        return routes[i].name;
+        return adminRoutes[i].name;
       }
     }
     return "Brand";
   };
 
+  // ************************************************************************ //
+
+  useEffect(() => {
+    console.log("AdminLayout component loaded");
+  }, []);
+
   return (
     <>
       <Sidebar
         {...props}
-        routes={routes}
+        routes={adminRoutes}
         logo={{
           innerLink: "/admin/index",
           imgSrc: require("../assets/img/brand/argon-react.png").default,
@@ -79,7 +86,7 @@ const Admin = (props) => {
           brandText={getBrandText(props.location.pathname)}
         />
         <Switch>
-          {getRoutes(routes)}
+          {getRoutes(adminRoutes)}
           <Redirect from="*" to="/admin/index" />
         </Switch>
       </div>
